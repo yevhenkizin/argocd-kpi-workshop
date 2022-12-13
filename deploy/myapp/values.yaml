@@ -9,7 +9,7 @@ image:
   repository: koteikin/argo-cd-workshop-kpi
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: '2bbee19'
+  tag: '61f18bf'
 
 imagePullSecrets: []
 nameOverride: ""
