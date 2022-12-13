@@ -1,0 +1,40 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flask-app
+  namespace: argo-cd
+  annotations:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: "default"
+  source:
+    repoURL: https://github.com/yevhenkizin/argocd-kpi-workshop.git
+    targetRevision: main
+    path: bodyfit-frontend
+    helm:
+      version: v3
+      valueFiles:
+        - values_dev/global.yaml
+        - values_dev/node-nginx.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bodyfit-frontend
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+      allowEmpty: false
+    syncOptions:
+    - Validate=true
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  revisionHistoryLimit: 10
