@@ -12,25 +12,24 @@ spec:
   source:
     repoURL: https://github.com/yevhenkizin/argocd-kpi-workshop.git
     targetRevision: main
-    path: bodyfit-frontend
+    path: deploy/myapp
     helm:
       version: v3
       valueFiles:
-        - values_dev/global.yaml
-        - values_dev/node-nginx.yaml
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: bodyfit-frontend
+    namespace: flask-app
   syncPolicy:
     automated:
       prune: true
       selfHeal: false
       allowEmpty: false
     syncOptions:
-    - Validate=true
-    - CreateNamespace=true
-    - PrunePropagationPolicy=foreground
-    - PruneLast=true
+      - Validate=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
     retry:
       limit: 5
       backoff:
